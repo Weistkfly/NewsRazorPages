@@ -1,0 +1,28 @@
+﻿@page
+@model NewsRazor.Pages.NewsModel
+@{
+}
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>News Title</th>
+            <th>Description</th>
+            <th>Author</th>
+            <th>Category</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var row in Model.News)
+        {
+            <tr>
+                <td>@row.Title</td>
+                <td>@row.Content</td>
+                <td>@row.Author.Name</td>
+                <td>@row.Category.Name</td>
+                <td>@row.Date.ToShortDateString()</td>
+            </tr>
+        }
+    </tbody>
+</table>
