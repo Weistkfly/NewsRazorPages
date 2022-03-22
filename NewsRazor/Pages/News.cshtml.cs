@@ -23,7 +23,7 @@ namespace NewsRazor.Pages
         public async Task<IActionResult> OnGetAsync()
         {
             var news = await NewsApp.GetNews();
-            News = news.ToList();
+            News = news.OrderByDescending(x => x.Date).ToList();
             foreach (var item in News)
             {
                 item.Author = _db.Authors.FirstOrDefault(u => u.Id == item.AuthorId);
