@@ -15,6 +15,8 @@ namespace NewsRazor.Pages
 
         public List<News> News;
         private INewsApp NewsApp { get; }
+        [BindProperty(SupportsGet = true)]
+        public string SearchString { get; set; }
         public NewsModel(INewsApp newsApp, NewsAppContext db)
         {
             NewsApp = newsApp;
@@ -23,7 +25,12 @@ namespace NewsRazor.Pages
         public async Task<IActionResult> OnGetAsync()
         {
             var news = await NewsApp.GetNews();
-            News = news.OrderByDescending(x => x.Date).ToList();
+            if (!string.IsNullOrEmpty(SearchString))
+            {
+                news = news.Where(s => s.Title.Contains(SearchString));
+            }
+            news = news.OrderByDescending(x => x.Date);
+            News = news.ToList();
             foreach (var item in News)
             {
                 item.Author = _db.Authors.FirstOrDefault(u => u.Id == item.AuthorId);
